@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Veyro — Custom Resume &amp; LinkedIn Writing</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,500&family=IBM+Plex+Sans:wght@400;500;600&family=Caveat:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #F6F5F0;
+    --paper-line: #DBD6C8;
+    --ink: #1C1F24;
+    --ink-soft: #55595F;
+    --red: #B23A2C;
+    --red-soft: #C9584B;
+    --teal: #1F5C52;
+    --teal-soft: #EAF1EF;
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #1A1D22;
+      --paper-line: #34383F;
+      --ink: #EDEAE1;
+      --ink-soft: #A9ADB4;
+      --red: #E06A55;
+      --red-soft: #E58C7B;
+      --teal: #5FB3A3;
+      --teal-soft: #22302D;
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #1A1D22;
+    --paper-line: #34383F;
+    --ink: #EDEAE1;
+    --ink-soft: #A9ADB4;
+    --red: #E06A55;
+    --red-soft: #E58C7B;
+    --teal: #5FB3A3;
+    --teal-soft: #22302D;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-padding-top: env(safe-area-inset-top, 0px); scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'IBM Plex Sans', system-ui, sans-serif;
+    font-size: 17px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+  ::selection { background: var(--red-soft); color: #fff; }
+
+  .wrap {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  header.site {
+    border-bottom: 1px solid var(--paper-line);
+    padding: 22px 0;
+  }
+  header.site .wrap {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 16px;
+  }
+  .brand {
+    font-family: 'Source Serif 4', serif;
+    font-weight: 600;
+    font-size: 20px;
+    letter-spacing: 0.01em;
+  }
+  header.site nav { display: flex; gap: 20px; font-size: 14px; }
+  header.site nav a { color: var(--ink-soft); text-decoration: none; }
+  header.site nav a:hover { color: var(--ink); }
+
+  /* Hero */
+  .hero { padding: 64px 0 40px; }
+  .hero h1 {
+    font-family: 'Source Serif 4', serif;
+    font-weight: 600;
+    font-size: clamp(32px, 6vw, 46px);
+    line-height: 1.12;
+    margin: 0 0 20px;
+    max-width: 15ch;
+  }
+  .hero p.lede {
+    font-size: 18px;
+    color: var(--ink-soft);
+    max-width: 46ch;
+    margin: 0 0 34px;
+  }
+
+  /* Annotated resume snippet — the visual hero device */
+  .markup {
+    border: 1px solid var(--paper-line);
+    background: color-mix(in srgb, var(--paper) 96%, var(--ink) 4%);
+    padding: 26px 28px;
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 15px;
+    line-height: 1.9;
+    position: relative;
+    margin-bottom: 30px;
+  }
+  .markup .label {
+    font-family: 'Source Serif 4', serif;
+    font-style: italic;
+    font-size: 13px;
+    color: var(--ink-soft);
+    margin-bottom: 14px;
+  }
+  .markup .strike {
+    text-decoration: line-through;
+    text-decoration-color: var(--red);
+    text-decoration-thickness: 1.5px;
+    color: var(--ink-soft);
+  }
+  .markup .note {
+    font-family: 'Caveat', cursive;
+    color: var(--red);
+    font-size: 19px;
+    font-weight: 600;
+  }
+  .markup .arrow { color: var(--red); font-family: 'Caveat', cursive; font-size: 19px; }
+
+  .cta-row { display: flex; gap: 14px; flex-wrap: wrap; }
+  .btn {
+    display: inline-block;
+    padding: 13px 26px;
+    border-radius: 3px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 15px;
+    border: 1px solid transparent;
+  }
+  .btn-primary { background: var(--red); color: #fff; }
+  .btn-primary:hover { background: var(--red-soft); }
+  .btn-ghost { border-color: var(--paper-line); color: var(--ink); }
+  .btn-ghost:hover { border-color: var(--ink-soft); }
+
+  /* Sections */
+  section { padding: 44px 0; border-top: 1px solid var(--paper-line); }
+  .kicker {
+    font-family: 'Source Serif 4', serif;
+    font-style: italic;
+    color: var(--ink-soft);
+    font-size: 14px;
+    margin: 0 0 8px;
+  }
+  h2 {
+    font-family: 'Source Serif 4', serif;
+    font-weight: 600;
+    font-size: 26px;
+    margin: 0 0 30px;
+  }
+
+  /* How it works */
+  .steps { list-style: none; margin: 0; padding: 0; }
+  .steps li {
+    display: grid;
+    grid-template-columns: 34px 1fr;
+    gap: 16px;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--paper-line);
+  }
+  .steps li:last-child { border-bottom: none; }
+  .steps .num {
+    font-family: 'Source Serif 4', serif;
+    font-style: italic;
+    color: var(--red);
+    font-size: 18px;
+  }
+  .steps h3 { margin: 0 0 4px; font-size: 16px; font-weight: 600; }
+  .steps p { margin: 0; color: var(--ink-soft); font-size: 15px; }
+
+  /* Pricing */
+  .tier {
+    border: 1px solid var(--paper-line);
+    padding: 26px 28px;
+    margin-bottom: 18px;
+  }
+  .tier.featured { border-color: var(--teal); background: var(--teal-soft); }
+  .tier-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 12px;
+    margin-bottom: 6px;
+    flex-wrap: wrap;
+  }
+  .tier-head h3 {
+    font-family: 'Source Serif 4', serif;
+    font-size: 20px;
+    margin: 0;
+  }
+  .tier-price {
+    font-family: 'Source Serif 4', serif;
+    font-size: 22px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .tier-tag { font-size: 14px; color: var(--ink-soft); margin: 0 0 16px; font-style: italic; }
+  .tier ul { margin: 0 0 20px; padding-left: 18px; font-size: 15px; color: var(--ink-soft); }
+  .tier ul li { margin-bottom: 6px; }
+  .tier ul li::marker { color: var(--red); }
+
+  .rush {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px dashed var(--paper-line);
+    padding: 18px 22px;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .rush p { margin: 0; font-size: 15px; color: var(--ink-soft); max-width: 40ch; }
+  .rush strong { color: var(--ink); }
+
+  /* Intake note */
+  .note-box {
+    background: color-mix(in srgb, var(--paper) 94%, var(--ink) 6%);
+    border-left: 3px solid var(--teal);
+    padding: 16px 20px;
+    font-size: 14.5px;
+    color: var(--ink-soft);
+    margin-top: 10px;
+  }
+
+  /* FAQ */
+  .faq { border-bottom: 1px solid var(--paper-line); padding: 18px 0; }
+  .faq:first-of-type { border-top: 1px solid var(--paper-line); }
+  .faq summary {
+    cursor: pointer;
+    font-weight: 600;
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .faq summary::-webkit-details-marker { display: none; }
+  .faq summary .plus { color: var(--red); font-family: 'Source Serif 4', serif; font-size: 20px; }
+  .faq[open] summary .plus { transform: rotate(45deg); display: inline-block; }
+  .faq p { color: var(--ink-soft); margin: 12px 0 0; font-size: 15px; }
+
+  /* Templates cross-link */
+  .templates-box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    border: 1px solid var(--paper-line);
+    padding: 22px 26px;
+  }
+  .templates-box p { margin: 0; color: var(--ink-soft); font-size: 15px; max-width: 38ch; }
+
+  .intake-form { display: flex; flex-direction: column; gap: 18px; }
+  .intake-form label {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ink);
+  }
+  .intake-form input,
+  .intake-form select,
+  .intake-form textarea {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 400;
+    color: var(--ink);
+    background: var(--paper);
+    border: 1px solid var(--paper-line);
+    border-radius: 3px;
+    padding: 11px 13px;
+    resize: vertical;
+  }
+  .intake-form input:focus,
+  .intake-form select:focus,
+  .intake-form textarea:focus {
+    outline: 2px solid var(--teal);
+    outline-offset: 1px;
+  }
+  .intake-form button { align-self: flex-start; border: none; cursor: pointer; }
+
+  footer {
+    padding: 30px 0 50px;
+    color: var(--ink-soft);
+    font-size: 13.5px;
+    border-top: 1px solid var(--paper-line);
+  }
+
+  @media (max-width: 480px) {
+    .tier-head { flex-direction: column; align-items: flex-start; }
+    .rush { flex-direction: column; align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap">
+    <div class="brand">Veyro</div>
+    <nav>
+      <a href="#pricing">Pricing</a>
+      <a href="#how">How it works</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+  </div>
+</header>
+
+<div class="hero wrap">
+  <h1>Your resume has six seconds. Make them count.</h1>
+  <p class="lede">I personally rewrite and tailor resumes so they get read by humans — and pass the software that screens them before a human ever sees your name.</p>
+
+  <div class="markup">
+    <div class="label">what usually gets fixed —</div>
+    <span class="strike">Responsible for managing a sales team</span>
+    <span class="arrow"> → </span>
+    <span class="note">Led a 6-person sales team to 118% of quota in Q3</span>
+  </div>
+
+  <div class="cta-row">
+    <a class="btn btn-primary" href="#pricing">See pricing</a>
+    <a class="btn btn-ghost" href="#how">How it works</a>
+  </div>
+</div>
+
+<section id="how">
+  <div class="wrap">
+    <p class="kicker">the process</p>
+    <h2>How it works</h2>
+    <ul class="steps">
+      <li>
+        <span class="num">1</span>
+        <div>
+          <h3>Pick a package and pay</h3>
+          <p>Choose Resume Refresh or Career Glow-Up below. Payment happens up front through Stripe — nothing starts until it's confirmed.</p>
+        </div>
+      </li>
+      <li>
+        <span class="num">2</span>
+        <div>
+          <h3>Send your details</h3>
+          <p>You'll land on a private form after payment — fill it out with your current resume, target job title, and anything you want highlighted.</p>
+        </div>
+      </li>
+      <li>
+        <span class="num">3</span>
+        <div>
+          <h3>Get your draft</h3>
+          <p>You'll get a rewritten, ATS-friendly resume back within the turnaround window, delivered as a PDF and an editable Google Doc.</p>
+        </div>
+      </li>
+      <li>
+        <span class="num">4</span>
+        <div>
+          <h3>Revise until it's right</h3>
+          <p>Each package includes revision rounds — send notes and I'll adjust until you're ready to send it out.</p>
+        </div>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<section id="pricing">
+  <div class="wrap">
+    <p class="kicker">packages</p>
+    <h2>Pricing</h2>
+
+    <div class="tier">
+      <div class="tier-head">
+        <h3>Resume Refresh</h3>
+        <span class="tier-price">$75</span>
+      </div>
+      <p class="tier-tag">A strong, professional rewrite of what you already have.</p>
+      <ul>
+        <li>AI-assisted, personally reviewed rewrite</li>
+        <li>ATS-friendly formatting</li>
+        <li>Stronger, quantified bullet points</li>
+        <li>1 round of revisions</li>
+        <li>PDF + editable Google Doc</li>
+        <li>48-hour turnaround</li>
+      </ul>
+      <a class="btn btn-primary" href="https://buy.stripe.com/28E14n3vxfHe9281Kl4ko03" target="_blank" rel="noopener">Get started — $75</a>
+    </div>
+
+    <div class="tier featured">
+      <div class="tier-head">
+        <h3>Career Glow-Up</h3>
+        <span class="tier-price">$175</span>
+      </div>
+      <p class="tier-tag">For a specific role you actually want.</p>
+      <ul>
+        <li>Everything in Resume Refresh</li>
+        <li>LinkedIn profile rewrite</li>
+        <li>Tailored to your target job posting</li>
+        <li>Custom cover letter template</li>
+        <li>15-minute walkthrough call or voice note</li>
+        <li>2 rounds of revisions</li>
+        <li>24–48 hour priority turnaround</li>
+      </ul>
+      <a class="btn btn-primary" href="https://buy.stripe.com/bJe6oH0jl2UsguAdt34ko04" target="_blank" rel="noopener">Get started — $175</a>
+    </div>
+
+    <div class="rush">
+      <p><strong>Need it in 24 hours?</strong> Add rush delivery to either package.</p>
+      <a class="btn btn-ghost" href="https://buy.stripe.com/eVq8wPaXZ2Us3HO0Gh4ko05" target="_blank" rel="noopener">Add rush — $25</a>
+    </div>
+
+    <div class="note-box">
+      Payment confirms your order — you'll get an email receipt, and you'll land on a private form to send your resume and target role. Nothing starts until that form is submitted.
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="templates-box">
+      <p>Want to write it yourself instead? Grab an editable template on Etsy for $5.99.</p>
+      <a class="btn btn-ghost" href="#" target="_blank" rel="noopener">Browse templates</a>
+    </div>
+  </div>
+</section>
+
+<section id="faq">
+  <div class="wrap">
+    <p class="kicker">questions</p>
+    <h2>FAQ</h2>
+
+    <details class="faq">
+      <summary>How long does it take? <span class="plus">+</span></summary>
+      <p>Resume Refresh is delivered within 48 hours. Career Glow-Up ships in 24–48 hours since it's priority. Add the rush option to either package for a guaranteed 24-hour turnaround.</p>
+    </details>
+    <details class="faq">
+      <summary>What if I don't like the draft? <span class="plus">+</span></summary>
+      <p>Each package includes revision rounds — send specific notes and I'll adjust the draft until it's right. Revisions are included in the price, not billed extra.</p>
+    </details>
+    <details class="faq">
+      <summary>Do you write cover letters too? <span class="plus">+</span></summary>
+      <p>A custom cover letter template is included with Career Glow-Up. It's not included with Resume Refresh, but can be added on request.</p>
+    </details>
+    <details class="faq">
+      <summary>Is this actually reviewed by a person? <span class="plus">+</span></summary>
+      <p>Yes. Every draft starts from an AI-assisted first pass, then gets personally reviewed and edited before it's sent to you — that review is what catches errors and makes it sound like you, not a template.</p>
+    </details>
+    <details class="faq">
+      <summary>Can I get a refund? <span class="plus">+</span></summary>
+      <p>If work hasn't started yet, you can request a full refund. Once a draft has been delivered, refunds are handled case by case — reach out and we'll sort it out.</p>
+    </details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    Veyro — resumes rewritten and reviewed by hand.
+  </div>
+</footer>
+
+</body>
+</html>
